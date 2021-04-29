@@ -13,16 +13,26 @@ const LOG_EVENT_GAME_OVER = "GAME_OVER";
 let battleLog = [];
 
 // MANUALLY SETTING UP MAXIMUM LIFE 
-let chosenMaxLife;
-const enteredValue = parseInt(prompt("Maximum life for you and the monster:", "100"));
+function getMaxLife() {
+    const enteredValue = parseInt(prompt("Maximum life for you and the monster:", "100"));
 
-if (isNaN(enteredValue) || enteredValue <= 0) {
-    chosenMaxLife = 100;
-    alert("Maximum life automatically set to 100.");
-} else {
-    chosenMaxLife = enteredValue;
-    alert(`Maximum life set to ${chosenMaxLife}.`);
+    if (isNaN(enteredValue) || enteredValue <= 0) {
+        throw {message: "Invalid user input, not a number!"};
+    }
+    return enteredValue;
 }
+
+let chosenMaxLife;
+try {
+    chosenMaxLife = getMaxLife();
+} catch (error) {
+    console.log(error);
+    chosenMaxLife = 100;
+    alert("You did not enter a valid number. Life automatically set to 100.");
+}
+
+
+
 
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
@@ -133,7 +143,15 @@ function healPlayerHandler() {
 
 // FUNCTION TO SHOW LOG
 function printLogHandler() {
-    console.log(battleLog);
+    let i = 0;
+    for (const element of battleLog) {
+        console.log(`${i}`);
+        for (const key in element) {
+            console.log(`${key} => ${element[key]}`);
+        };
+        i++;
+    }
+    //console.log(battleLog);
 }
 
 
